@@ -1,21 +1,37 @@
 ---
-type Language = {
-  label: string;
-  code: string;
-  file: string;
-};
+import { getAvailableLanguages, getJokesForLanguage } from "../data/api";
+import Layout from "../layouts/Layout.astro";
+import type { Language } from "../types";
 
 export async function getStaticPaths() {
-  const data = await fetch('https://only-fun.github.io/db/languages.json');
-  const languages: Language[] = await data.json();
+  const languages = await getAvailableLanguages();
+
   const paths = languages.map((language) => ({
     params: { language: language.code },
+    props: { language },
   }));
 
   return paths;
 }
 
-const { language } = Astro.params;
+interface Props {
+  language: Language;
+}
+
+const { language } = Astro.props;
+
+const { jokes } = await getJokesForLanguage(language);
 ---
 
-<div>Good dog, {language}</div>
+<Layout title="Welcome to Astro.">
+  <header>
+    <h1>Chosen language: {language.label}</h1>
+  </header>
+  <main>
+    {
+      jokes.map((joke) => {
+        return <div>{joke.question}</div>;
+      })
+    }
+  </main>
+</Layout>

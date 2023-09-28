@@ -1,33 +1,5 @@
 ---
-import Layout from '../layouts/Layout.astro';
-const data = await fetch('https://only-fun.github.io/db/en.json').then((res): Promise<ApiResponse> =>
-	res.json()
-);
-
-type ApiResponse = {
-	jokes: Joke[];
-};
-
-type Joke = {
-	id: number;
-	question: string;
-	answer: string;
-};
-
-const {jokes} = data;
-
-
-
+const defaultLanguage = `${import.meta.env.BASE_URL}/en`;
 ---
 
-<Layout title="Welcome to Astro.">
-	<main>
-		{jokes.map((joke: Joke) => {
-			return <div>{joke.question}</div>
-		})}
-	</main>
-</Layout>
-
-<style>
-
-</style>
+<meta http-equiv="refresh" content={`0;url=${defaultLanguage}`} />

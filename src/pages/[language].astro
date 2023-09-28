@@ -1,5 +1,6 @@
 ---
 import { getAvailableLanguages, getJokesForLanguage } from "../data/api";
+import { useTranslations } from "../i18n/utils";
 import Layout from "../layouts/Layout.astro";
 import type { Language } from "../types";
 
@@ -21,11 +22,13 @@ interface Props {
 const { language } = Astro.props;
 
 const { jokes } = await getJokesForLanguage(language);
+
+const t = useTranslations(Astro.url);
 ---
 
 <Layout title="Welcome to Astro.">
   <header>
-    <h1>Chosen language: {language.label}</h1>
+    <h1>{t("page.chosen-language")}: {language.label}</h1>
   </header>
   <main>
     {

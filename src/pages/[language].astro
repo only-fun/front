@@ -1,0 +1,21 @@
+---
+type Language = {
+  label: string;
+  code: string;
+  file: string;
+};
+
+export async function getStaticPaths() {
+  const data = await fetch('https://only-fun.github.io/db/languages.json');
+  const languages: Language[] = await data.json();
+  const paths = languages.map((language) => ({
+    params: { language: language.code },
+  }));
+
+  return paths;
+}
+
+const { language } = Astro.params;
+---
+
+<div>Good dog, {language}</div>
